@@ -1,5 +1,7 @@
+using ApiProdutos.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +22,10 @@ namespace ApiProdutos
         public void ConfigureServices(IServiceCollection services)
         {
 
+            string mySqlConnection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContextPool<AppDbContext>(options =>
+                 options.UseMySql(mySqlConnection,
+                    ServerVersion.AutoDetect(mySqlConnection)));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
